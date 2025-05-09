@@ -1,0 +1,13 @@
+USE PROYECTO
+go
+CREATE PROCEDURE pa_obtener_comunas_por_region
+    @IdRegion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT IdComuna, IdRegion, NombreComuna, InformacionAdicional
+    FROM Comuna
+    WHERE IdRegion = @IdRegion;
+END
+GO

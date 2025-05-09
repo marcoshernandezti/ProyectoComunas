@@ -1,0 +1,20 @@
+USE PROYECTO
+go
+CREATE PROCEDURE pa_obtener_comuna
+    @IdRegion INT,
+    @IdComuna INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        IdComuna,
+        IdRegion,
+        NombreComuna,
+        InformacionAdicional
+    FROM 
+        Comuna
+    WHERE 
+        IdRegion = @IdRegion AND IdComuna = @IdComuna;
+END
+GO

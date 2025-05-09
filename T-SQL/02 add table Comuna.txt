@@ -1,0 +1,9 @@
+USE PROYECTO
+go
+CREATE TABLE Comuna (
+    IdComuna INT PRIMARY KEY IDENTITY(1,1),
+    IdRegion INT NOT NULL FOREIGN KEY REFERENCES Region(IdRegion),
+    NombreComuna NVARCHAR(100) NOT NULL,
+    InformacionAdicional XML NULL
+);
+go

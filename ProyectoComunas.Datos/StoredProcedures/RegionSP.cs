@@ -35,7 +35,7 @@ namespace ProyectoComunas.Datos.StoredProcedures
             try
             {
                 _logger.LogDebug("Obteniendo region {idRegion}", idRegion);
-                return await _context.Regiones.FromSqlRaw("EXEC GetRegionById @IdRegion = {0}", idRegion).FirstOrDefaultAsync();
+                return await _context.Regiones.FromSqlRaw("EXEC pa_obtener_region @IdRegion = {0}", idRegion).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

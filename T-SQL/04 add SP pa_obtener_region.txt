@@ -1,0 +1,13 @@
+USE PROYECTO
+go
+CREATE PROCEDURE pa_obtener_region
+    @IdRegion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT IdRegion, NombreRegion
+    FROM Region
+    WHERE IdRegion = @IdRegion;
+END
+GO

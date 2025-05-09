@@ -31,12 +31,12 @@ namespace ProyectoComunas.Datos.StoredProcedures
             }
         }
 
-        public async Task<Comuna> GetComunaByIdAsync(int idRegion, int idComuna)
+        public async Task<Comuna?> GetComunaByIdAsync(int idRegion, int idComuna)
         {
             try
             {
                 _logger.LogDebug("Obteniendo datos de la comuna. idRegion = {idRegion}, idComuna = {idComuna}", idRegion, idComuna);
-                return await _context.Comunas.FromSqlRaw("EXEC GetComunaById @IdRegion = {0}, @IdComuna = {1}", idRegion, idComuna).FirstOrDefaultAsync();
+                return await _context.Comunas.FromSqlRaw("EXEC pa_obtener_comuna @IdRegion = {0}, @IdComuna = {1}", idRegion, idComuna).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace ProyectoComunas.Datos.StoredProcedures
             {
                 _logger.LogDebug("Actualizando datos de la comuna. idRegion = {idRegion}, idComuna = {idComuna}", idRegion, comuna.IdComuna);
                 return await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC UpdateComuna @IdRegion = {0}, @IdComuna = {1}, @Comuna = {2}, @InformacionAdicional = {3}",
+                    "EXEC pa_actualizar_comuna_comuna @IdRegion = {0}, @IdComuna = {1}, @Comuna = {2}, @InformacionAdicional = {3}",
                     idRegion, comuna.IdComuna, comuna.NombreComuna, comuna.InformacionAdicional ?? string.Empty);
             }
             catch (Exception ex)

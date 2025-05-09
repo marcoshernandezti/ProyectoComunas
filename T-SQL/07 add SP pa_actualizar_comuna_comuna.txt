@@ -1,0 +1,23 @@
+USE PROYECTO
+go
+CREATE PROCEDURE pa_actualizar_comuna_comuna
+    @IdRegion INT,
+    @IdComuna INT,
+    @Comuna NVARCHAR(100),
+    @InformacionAdicional XML
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    MERGE INTO Comuna AS Target
+    USING (SELECT @IdComuna AS IdComuna, @IdRegion AS IdRegion, @Comuna AS NombreComuna, @InformacionAdicional AS InformacionAdicional) AS Source
+    ON Target.IdComuna = Source.IdComuna AND Target.IdRegion = Source.IdRegion
+    WHEN MATCHED THEN
+        UPDATE SET 
+            NombreComuna = Source.NombreComuna,
+            InformacionAdicional = Source.InformacionAdicional
+    WHEN NOT MATCHED THEN
+        INSERT (IdRegion, NombreComuna, InformacionAdicional)
+        VALUES (Source.IdRegion, Source.NombreComuna, Source.InformacionAdicional);
+END
+GO

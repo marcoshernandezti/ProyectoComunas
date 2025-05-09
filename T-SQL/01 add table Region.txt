@@ -1,0 +1,7 @@
+USE PROYECTO
+go
+CREATE TABLE Region (
+    IdRegion INT PRIMARY KEY IDENTITY(1,1),
+    NombreRegion NVARCHAR(100) NOT NULL
+);
+GO
