@@ -1,0 +1,23 @@
+﻿@model List<ProyectoComunas.Web.Models.Comuna>
+
+<h1>Comunas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            @* <th>InformacionAdicional</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comuna in Model)
+        {
+            <tr>
+                <td>@comuna.idComuna</td>
+                <td>@comuna.nombreComuna</td>
+               @*  <td>@comuna.informacionAdicional</td> *@
+            </tr>
+        }
+    </tbody>
+</table>

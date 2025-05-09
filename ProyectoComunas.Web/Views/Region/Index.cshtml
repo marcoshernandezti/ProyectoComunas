@@ -1,0 +1,27 @@
+﻿@model List<ProyectoComunas.Web.Models.Region>
+
+<h1>Regiones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var region in Model)
+        {
+            <tr>
+                <td>@region.idRegion</td>
+                <td>@region.nombreRegion</td>
+                <td>
+                    <a asp-controller="Comuna" asp-action="Index" asp-route-idRegion="@region.idRegion" class="btn btn-primary">
+                        Ver Comunas
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
