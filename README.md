@@ -7,3 +7,7 @@ Se divide en 3 subproyectos.
 Adicionalmente se agrega.
 * REgistro de log en los proyectos API y DATOS.
 * Los script para la base de datos, se encuentran en la carpeta T-SQL
+
+*** NOTA
+* Se utiliza GitHubCopilot para generar gran parte del proyecto y revisar código con buenas prácticas.
+* Por ahora, no tengo Base de datos para probar los servicios del API, para que consuma los SP de la base de datos.
