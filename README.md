@@ -51,4 +51,38 @@ Los scripts necesarios para crear la base de datos y los procedimientos almacena
 
 ---
 
+## 🧪 API - Pruebas con Swagger (OpenAPI)
+
+Este proyecto incluye documentación interactiva de la API mediante **Swagger (OpenAPI)**. Puedes usar esta interfaz para:
+
+- Ver todos los endpoints disponibles
+- Probar directamente las consultas desde el navegador
+- Agregar autenticación con un token para acceder a los métodos protegidos
+
+### 🔐 Token para pruebas
+
+Para consumir los endpoints protegidos, debes ingresar el siguiente token en Swagger UI:
+
+```
+YoSoyTuToken!
+```
+
+Haz clic en el botón **Authorize** (candado), pega el token y luego realiza tus pruebas.
+
+### 📸 Capturas de Swagger UI
+
+- **📋 Endpoints disponibles:**
+
+  ![Swagger Endpoints](docs/img/swagger-endpoints.png)
+
+- **🔑 Ingreso del Token:**
+
+  ![Swagger Token Auth](docs/img/swagger-token.png)
+
+- **🌍 Consumo del endpoint de regiones:**
+
+  ![Swagger Lista Regiones](docs/img/swagger-regiones.png)
+
+---
+
 ¡Gracias por revisar este proyecto! Si tienes sugerencias o mejoras, no dudes en contribuir.
