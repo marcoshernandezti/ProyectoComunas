@@ -23,6 +23,33 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     builder.Services.AddScoped<RegionSP>();
     builder.Services.AddScoped<ComunaSP>();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        // Configurar esquema de seguridad para el token
+        options.AddSecurityDefinition("ApiKey", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Name = "X-API-KEY",
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Description = "Clave de API necesaria para acceder a los endpoints. Ejemplo: 'YoSoyTuToken!'"
+        });
+
+        // Aplicar el esquema de seguridad globalmente
+        options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    }
+                },
+                new string[] {}
+            }
+        });
+    });
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
