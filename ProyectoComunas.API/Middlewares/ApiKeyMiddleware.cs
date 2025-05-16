@@ -8,7 +8,7 @@ namespace ProyectoComunas.API.Middlewares
     {
         private readonly RequestDelegate _next;
         private const string ApiKeyHeaderName = "X-Api-Key";
-        private readonly string _apiKey;
+        private readonly string? _apiKey;
 
         public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
         {
@@ -18,7 +18,9 @@ namespace ProyectoComunas.API.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (!context.Request.Headers.TryGetValue(ApiKeyHeaderName, out var extractedApiKey) || extractedApiKey != _apiKey)
+            if (string.IsNullOrEmpty(_apiKey) ||
+                !context.Request.Headers.TryGetValue(ApiKeyHeaderName, out var extractedApiKey) ||
+                extractedApiKey != _apiKey)
             {
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("API Key incorrecto");

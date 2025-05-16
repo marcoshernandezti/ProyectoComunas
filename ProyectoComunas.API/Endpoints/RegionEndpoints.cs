@@ -31,14 +31,14 @@ namespace ProyectoComunas.API.Endpoints
             });
 
             // Endpoint: Información de una región
-            app.MapGet("/api/region/{IdRegion}", async (int IdRegion, RegionSP regionSP) =>
+            app.MapGet("/api/region/{IdRegion}", (int IdRegion, RegionSP regionSP) =>
             {
                 var region = new Region { IdRegion = 1, NombreRegion = "Región de Valparaíso" };
                 if (region == null)
                 {
-                    return Results.NotFound($"No se encontró la región con Id {IdRegion}");
+                    return Task.FromResult(Results.NotFound($"No se encontró la región con Id {IdRegion}"));
                 }
-                return Results.Ok(region);
+                return Task.FromResult(Results.Ok(region));
             })
             .WithName("GetRegionById")
             .WithOpenApi(operation =>
