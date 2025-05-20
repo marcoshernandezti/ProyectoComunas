@@ -30,10 +30,10 @@ namespace ProyectoComunas.API.Endpoints
             });
 
             // Endpoint: Información de una región
-            app.MapGet("/api/region/{IdRegion}", (int IdRegion, RegionSP regionSP) =>
+            app.MapGet("/api/region/{IdRegion}", async (int IdRegion, RegionSP regionSP) =>
             {
-                var region = regionSP.GetRegionByIdAsync(IdRegion);
-                if (region.Result == null)
+                var region = await regionSP.GetRegionByIdAsync(IdRegion);
+                if (region == null)
                 {
                     return Results.NotFound($"No se encontró la región con Id {IdRegion}");
                 }
