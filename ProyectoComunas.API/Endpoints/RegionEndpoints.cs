@@ -11,14 +11,13 @@ namespace ProyectoComunas.API.Endpoints
         public static void MapRegionEndpoints(this IEndpointRouteBuilder app)
         {
             // Endpoint: Listado de regiones
-            app.MapGet("/api/region", () =>
+            app.MapGet("/api/region", static async (RegionSP regionSP) =>
             {
-                List<Region> regiones = new List<Region>
+                var regiones = await regionSP.GetRegionesAsync();
+                if (regiones == null || regiones.Count == 0)
                 {
-                    new Region { IdRegion = 1, NombreRegion = "Región de Valparaíso" },
-                    new Region { IdRegion = 2, NombreRegion = "Región Metropolitana" },
-                    new Region { IdRegion = 3, NombreRegion = "Región del Libertador General Bernardo O'Higgins" }
-                };
+                    return Results.NotFound("No se encontraron regiones.");
+                }
                 return Results.Ok(regiones);
             })
             .WithName("GetRegiones")
@@ -33,12 +32,18 @@ namespace ProyectoComunas.API.Endpoints
             // Endpoint: Información de una región
             app.MapGet("/api/region/{IdRegion}", (int IdRegion, RegionSP regionSP) =>
             {
-                var region = new Region { IdRegion = 1, NombreRegion = "Región de Valparaíso" };
-                if (region == null)
+                var region = regionSP.GetRegionByIdAsync(IdRegion);
+                if (region.Result == null)
                 {
-                    return Task.FromResult(Results.NotFound($"No se encontró la región con Id {IdRegion}"));
+                    return Results.NotFound($"No se encontró la región con Id {IdRegion}");
                 }
-                return Task.FromResult(Results.Ok(region));
+                return Results.Ok(region);                
+                //var region = new Region { IdRegion = 1, NombreRegion = "Región de Valparaíso" };
+                //if (region == null)
+                //{
+                //    return Task.FromResult(Results.NotFound($"No se encontró la región con Id {IdRegion}"));
+                //}
+                //return Task.FromResult(Results.Ok(region));
             })
             .WithName("GetRegionById")
             .WithOpenApi(operation =>

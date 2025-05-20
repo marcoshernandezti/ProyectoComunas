@@ -12,13 +12,13 @@ namespace ProyectoComunas.API.Endpoints
         public static void MapComunaEndpoints(this IEndpointRouteBuilder app)
         {
             // Endpoint: Listado de comunas de la región especificada
-            app.MapGet("/api/region/{IdRegion}/comuna", () =>
+            app.MapGet("/api/region/{IdRegion}/comuna", async (int IdRegion, ComunaSP comunaSP) =>
             {
-                var comunas = new List<Comuna>
+                var comunas = await comunaSP.GetComunasByRegionAsync(IdRegion);
+                if (comunas == null || comunas.Count == 0)
                 {
-                        new Comuna { IdComuna = 1, IdRegion = 1, NombreComuna = "Valparaíso", InformacionAdicional = "Puerto principal de Chile" },
-                        new Comuna { IdComuna = 2, IdRegion = 1, NombreComuna = "Viña del Mar", InformacionAdicional = "Conocida como la Ciudad Jardín" }
-                };
+                    return Results.NotFound($"No se encontró las comunas en la región {IdRegion}");
+                }
                 return Results.Ok(comunas);
             })
             .WithName("GetComunasByRegion")
@@ -49,25 +49,52 @@ namespace ProyectoComunas.API.Endpoints
             });
 
             // Endpoint: Actualizar información de una comuna
-            app.MapPost("/api/region/{IdRegion}/comuna", async (int IdRegion, Comuna comuna, ComunaSP comunaSP) =>
+            app.MapPatch("/api/region/{IdRegion}/comuna", async (int IdRegion, Comuna comuna, ComunaSP comunaSP) =>
             {
-                var result = await comunaSP.UpdateComunaAsync(IdRegion, comuna);
-                if (result > 0)
-                {
-                    return Results.Ok("Comuna actualizada correctamente");
-                }
-                return Results.BadRequest("No se pudo actualizar la comuna");
+                //// Buscar si la comuna ya existe
+                //var comunaExistente = comuna.IdComuna > 0
+                //    ? await comunaSP.GetComunaByIdAsync(IdRegion, comuna.IdComuna)
+                //    : null;
+
+                //if (comunaExistente != null)
+                //{
+                //    // Actualizar comuna existente
+                //    var result = await comunaSP.UpdateComunaAsync(IdRegion, comuna);
+                //    if (result > 0)
+                //        return Results.Ok("Comuna actualizada correctamente");
+                //    return Results.BadRequest("No se pudo actualizar la comuna");
+                //}
+                //else
+                //{
+                //    // Crear nueva comuna (debería implementarse un método InsertComunaAsync en ComunaSP)
+                //    // Aquí se asume que existe dicho método, si no, debe implementarse.
+                //    if (comuna.IdRegion == null) comuna.IdRegion = IdRegion;
+                //    var result = await comunaSP.UpdateComunaAsync(IdRegion, comuna);
+                //    if (result > 0)
+                //        return Results.Ok("Comuna creada correctamente");
+                //    return Results.BadRequest("No se pudo crear la comuna");
+                //}
+                return Results.StatusCode(StatusCodes.Status501NotImplemented);
             })
-            .WithName("UpdateComuna")
-            .WithOpenApi(operation =>
-            {
-                operation.Summary = "Actualiza la información de una comuna.";
-                operation.Description = "Permite actualizar los datos de una comuna específica en una región.";
-                operation.RequestBody.Description = "Los datos actualizados de la comuna.";
-                operation.Responses["200"] = new() { Description = "Comuna actualizada exitosamente." };
-                operation.Responses["400"] = new() { Description = "No se pudo actualizar la comuna." };
-                return operation;
-            });
+                .WithName("UpsertComuna")
+                .WithOpenApi(operation =>
+                {
+                    operation.Summary = "No implementado: Crea o actualiza la información de una comuna.";
+                    operation.Description = "Este endpoint aún no está implementado.";
+                    operation.Responses["501"] = new() { Description = "No implementado." };
+                    return operation;
+                });
+        //})
+        //    .WithName("UpsertComuna")
+        //    .WithOpenApi(operation =>
+        //    {
+        //        operation.Summary = "Crea o actualiza la información de una comuna.";
+        //        operation.Description = "Permite crear una nueva comuna o actualizar los datos de una existente en una región.";
+        //        operation.RequestBody.Description = "Los datos de la comuna a crear o modificar.";
+        //        operation.Responses["200"] = new() { Description = "Comuna creada o actualizada exitosamente." };
+        //        operation.Responses["400"] = new() { Description = "No se pudo crear o actualizar la comuna." };
+        //        return operation;
+        //    });
         }
     }
 }

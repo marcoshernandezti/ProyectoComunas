@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 using ProyectoComunas.Datos.Exceptions;
 using ProyectoComunas.Datos.Models;
 
@@ -18,30 +19,48 @@ namespace ProyectoComunas.Datos.StoredProcedures
 
         public async Task<List<Region>> GetRegionesAsync()
         {
-            try
+            var regiones = new List<Region>
             {
-                _logger.LogInformation("Obteniendo lista de regiones");
-                return await _context.Regiones.FromSqlRaw("EXEC pa_obtener_regiones").ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener la lista de regiones");
-                throw new DatosException("Error al obtener la lista de regiones", ex);
-            }
+                new Region { IdRegion = 1, NombreRegion = "Región de Valparaíso" },
+                new Region { IdRegion = 2, NombreRegion = "Región Metropolitana" }
+            };
+            return await Task.FromResult(regiones);
+
+            //try
+            //{
+            //    _logger.LogInformation("Obteniendo lista de regiones");
+            //    return await _context.Regiones.FromSqlRaw("EXEC pa_obtener_regiones").ToListAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "Error al obtener la lista de regiones");
+            //    throw new DatosException("Error al obtener la lista de regiones", ex);
+            //}
         }
 
         public async Task<Region?> GetRegionByIdAsync(int idRegion)
         {
-            try
-            {
-                _logger.LogDebug("Obteniendo region {idRegion}", idRegion);
-                return await _context.Regiones.FromSqlRaw("EXEC pa_obtener_region @IdRegion = {0}", idRegion).FirstOrDefaultAsync();
+            if (idRegion != 1) {
+                return null;
             }
-            catch (Exception ex)
+
+            var region = new Region
             {
-                _logger.LogError(ex, "Error al obtener datos de la región. IdRegion = {idRegion}", idRegion);
-                throw new DatosException("Error al obtener datos de la región", ex);
-            }
+                IdRegion = 1,
+                NombreRegion = "Región de Valparaíso"
+            };
+            return await Task.FromResult(region);
+
+            //try
+            //{
+            //    _logger.LogDebug("Obteniendo region {idRegion}", idRegion);
+            //    return await _context.Regiones.FromSqlRaw("EXEC pa_obtener_region @IdRegion = {0}", idRegion).FirstOrDefaultAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "Error al obtener datos de la región. IdRegion = {idRegion}", idRegion);
+            //    throw new DatosException("Error al obtener datos de la región", ex);
+            //}
         }
     }
 }
